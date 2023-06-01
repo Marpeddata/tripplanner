@@ -29,6 +29,22 @@ public class User implements Serializable {
   @Size(min = 1, max = 255)
   @Column(name = "user_pass")
   private String userPass;
+  @Column(name = "address")
+  String address;
+  @Column(name = "phone_number")
+  int phoneNumber;
+  @Column(name = "email")
+  String email;
+  @Column(name = "birth_year")
+  int birthYear;
+  @Column(name = "gender")
+  String gender;
+
+  @ManyToMany
+  @JoinTable(name = "user_trips", joinColumns = {
+    @JoinColumn(name = "user_name", referencedColumnName = "user_name")}, inverseJoinColumns = {
+    @JoinColumn(name = "trip_id", referencedColumnName = "id")})
+  private List<Trip> trips = new ArrayList<>();
 
   @JoinTable(name = "user_roles", joinColumns = {
     @JoinColumn(name = "user_name", referencedColumnName = "user_name")}, inverseJoinColumns = {
@@ -88,12 +104,66 @@ public class User implements Serializable {
     roleList.add(userRole);
   }
 
+  public String getAddress() {
+    return address;
+  }
+
+  public void setAddress(String address) {
+    this.address = address;
+  }
+
+  public int getPhoneNumber() {
+    return phoneNumber;
+  }
+
+  public void setPhoneNumber(int phoneNumber) {
+    this.phoneNumber = phoneNumber;
+  }
+
+  public String getEmail() {
+    return email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
+  public int getBirthYear() {
+    return birthYear;
+  }
+
+  public void setBirthYear(int birthYear) {
+    this.birthYear = birthYear;
+  }
+
+  public String getGender() {
+    return gender;
+  }
+
+  public void setGender(String gender) {
+    this.gender = gender;
+  }
+
+  public List<Trip> getTrips() {
+    return trips;
+  }
+
+  public void AddTrip(Trip trip) {
+    this.trips.add(trip);
+    trip.addUser(this);
+  }
 
   @Override
   public String toString() {
     return "User{" +
             "userName='" + userName + '\'' +
             ", userPass='" + userPass + '\'' +
+            ", Address='" + address + '\'' +
+            ", phoneNumber=" + phoneNumber +
+            ", email='" + email + '\'' +
+            ", BirthYear=" + birthYear +
+            ", Gender='" + gender + '\'' +
+            ", trips=" + trips +
             ", roleList=" + roleList +
             '}';
   }
